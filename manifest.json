@@ -1,13 +1,13 @@
 {
-  "name": "Trainer App",
-  "short_name": "Trainer",
+  "name": "Фитнес Абонаменти",
+  "short_name": "Абонаменти",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#4da3ff",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3043/3043204.png",
+      "src": "https://pwa-builder-dynamic-image.azurewebsites.net/?fontFamily=sans-serif&fontWeight=900&fontSize=100&backgroundColor=4da3ff&textColor=000000&text=FA&width=512&height=512",
       "sizes": "512x512",
       "type": "image/png"
     }
