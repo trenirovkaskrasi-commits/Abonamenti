@@ -2,61 +2,54 @@
 <html lang="bg">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trainer App v20</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Фитнес Абонаменти</title>
+    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --bg: #000000; --card: #111111; --accent: #4da3ff; --text: #ffffff;
-            --muted: #b5b5b5; --danger: #ff4d4d; --success: #33cc66; --warning: #ff9933; --purple: #b366ff;
+            --muted: #b5b5b5; --danger: #ff4d4d; --success: #33cc66; --purple: #b366ff;
         }
-        * { box-sizing: border-box; }
-        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 100px; }
-        header { background: #000; padding: 18px; text-align: center; font-weight: bold; font-size: 22px; border-bottom: 2px solid #222; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 100px; }
+        header { background: #000; padding: 20px; text-align: center; font-weight: bold; font-size: 26px; border-bottom: 2px solid #222; color: var(--accent); }
         
-        #top-bar { padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 0; background: #000; z-index: 10; border-bottom: 1px solid #222; }
-        .btn-top { padding: 12px; font-size: 14px; border-radius: 10px; border: 1px solid #333; cursor: pointer; font-weight: bold; text-align: center; }
+        #top-bar { padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 0; background: #000; z-index: 10; }
+        .btn-top { padding: 14px; font-size: 16px; border-radius: 12px; border: 1px solid #333; cursor: pointer; font-weight: bold; text-align: center; background: #1a1a1a; color: white; }
         
-        /* УВЕЛИЧЕН СПИСЪК С КЛИЕНТИ */
-        .client { display: flex; align-items: center; background: var(--card); margin: 12px; padding: 15px; border-radius: 18px; border: 1px solid #222; cursor: pointer; }
-        .photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; background: #333; }
+        .client { display: flex; align-items: center; background: var(--card); margin: 12px; padding: 18px; border-radius: 20px; border: 1px solid #222; position: relative; }
+        .photo-container { width: 80px; height: 80px; border-radius: 50%; overflow: hidden; background: #222; flex-shrink: 0; border: 2px solid #333; display: flex; align-items: center; justify-content: center; }
+        .photo-container img { width: 100%; height: 100%; object-fit: cover; }
+        
         .status { width: 15px; height: 15px; border-radius: 50%; margin: 0 15px; }
         .active { background: var(--success); }
         .inactive { background: var(--danger); }
+
+        .name-info { flex: 1; font-size: 22px; overflow: hidden; }
+        .name-info b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .name-info small { font-size: 16px; color: var(--muted); display: block; }
         
-        /* ТЕКСТ В СПИСЪКА - ПО-ГОЛЯМ */
-        .name-info { flex: 1; font-size: 20px; line-height: 1.2; }
-        .name-info b { display: block; margin-bottom: 4px; }
-        .name-info small { font-size: 15px; color: var(--muted); letter-spacing: 0.5px; }
-        
-        /* ЦИФРА ТРЕНИРОВКИ - ПО-ГОЛЯМА */
-        .remain-count { font-size: 34px; font-weight: 800; color: var(--accent); min-width: 45px; text-align: right; }
+        .remain-count { font-size: 38px; font-weight: 900; color: var(--accent); margin-left: 10px; min-width: 50px; text-align: right; }
 
         #addBtn { 
-            position: fixed; right: 25px; bottom: 35px; width: 70px; height: 70px; 
+            position: fixed; right: 25px; bottom: 35px; width: 75px; height: 75px; 
             border-radius: 50%; background: var(--accent); color: black; 
-            font-size: 45px; border: none; z-index: 100; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(77, 163, 255, 0.4);
+            font-size: 50px; border: none; z-index: 100; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 20px rgba(77, 163, 255, 0.4);
         }
 
-        /* МОДАЛНИ ПРОЗОРЦИ */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); overflow-y: auto; z-index: 2000; }
-        .modal-content { background: var(--card); margin: 15px; padding: 25px; border-radius: 25px; border: 1px solid #333; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); overflow-y: auto; z-index: 2000; padding: 20px; }
+        .modal-content { background: var(--card); padding: 25px; border-radius: 25px; border: 1px solid #333; max-width: 500px; margin: auto; }
         
-        input, button, select { width: 100%; padding: 16px; margin-top: 10px; border-radius: 12px; border: 1px solid #333; font-size: 17px; font-weight: 600; background: #1a1a1a; color: white; }
-        select { appearance: none; cursor: pointer; }
-        
-        .btn-blue { background: var(--accent); color: black; border: none; }
+        input, button, select { width: 100%; padding: 18px; margin-top: 15px; border-radius: 12px; border: 1px solid #333; font-size: 20px; background: #1a1a1a; color: white; }
+        .btn-blue { background: var(--accent); color: black; border: none; font-weight: bold; }
+        .btn-green { background: var(--success); color: black; border: none; font-weight: bold; }
         .btn-purple { background: var(--purple); color: black; border: none; }
         .btn-red { background: var(--danger); color: white; border: none; }
         .btn-gray { background: #333; color: white; border: none; }
-        .btn-green { background: var(--success); color: black; border: none; }
-        
+
         .calc-box { background: #1a1a1a; padding: 18px; border-radius: 12px; margin-top: 15px; border-left: 5px solid var(--accent); font-size: 19px; }
-        .history-section { margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; }
-        .history-item { font-size: 15px; padding: 10px; border-bottom: 1px solid #222; color: var(--muted); }
-        .edit-badge { background: #222; padding: 10px 20px; border-radius: 25px; font-size: 14px; color: var(--accent); cursor: pointer; display: inline-block; margin-top: 12px; border: 1px solid #444; }
-        
-        label { display: block; margin-top: 18px; font-size: 15px; color: var(--muted); margin-left: 5px; }
+        .history-item { font-size: 16px; padding: 10px; border-bottom: 1px solid #222; color: var(--muted); }
     </style>
 </head>
 <body>
@@ -64,15 +57,14 @@
 <header>Фитнес Абонаменти</header>
 
 <div id="top-bar">
-    <button class="btn-top btn-gray" onclick="exportData()">📤 ЕКСПОРТ</button>
-    <button class="btn-top btn-gray" onclick="importData()">📥 ИМПОРТ</button>
+    <div class="btn-top" onclick="exportData()">📤 Експорт</div>
+    <div class="btn-top" onclick="document.getElementById('importInput').click()">📥 Импорт</div>
 </div>
+<input type="file" id="importInput" style="display:none" accept=".json" onchange="doImport(event)">
 
 <div id="clientList"></div>
 
 <button id="addBtn" onclick="openForm(null)">+</button>
-
-<input type="file" id="importInput" style="display:none" accept=".json" onchange="doImport(event)">
 
 <div class="modal" id="formModal">
     <div class="modal-content">
@@ -81,50 +73,22 @@
         <div id="nameFields">
             <label>Снимка:</label>
             <input type="file" id="pInput" accept="image/*" onchange="processImage(event)">
-            <input id="nInput" placeholder="Име и Фамилия">
+            <input id="nInput" placeholder="Име на клиента">
             <input id="phInput" placeholder="Телефон" type="tel">
         </div>
 
-        <label>Избери Пакет:</label>
+        <label>Пакет:</label>
         <select id="selPk" onchange="updateUI()">
             <option value="" disabled selected>Избери тренировки...</option>
             <option value='{"n":8, "p":100}'>8 тренировки - 100€</option>
-            <option value='{"n":10, "p":125}'>10 тренировки - 125€</option>
             <option value='{"n":12, "p":150}'>12 тренировки - 150€</option>
             <option value='{"n":16, "p":200}'>16 тренировки - 200€</option>
-            <option value='{"n":20, "p":250}'>20 тренировки - 250€</option>
-        </select>
-
-        <label>Отстъпка:</label>
-        <select id="selDs" onchange="updateUI()">
-            <option value="0">0% Отстъпка</option>
-            <option value="4">4% Отстъпка</option>
-            <option value="8">8% Отстъпка</option>
-        </select>
-
-        <label>Валидност:</label>
-        <select id="selDr" onchange="updateUI()">
-            <option value="0">БЕЗ краен срок</option>
-            <option value="30">30 дни (1 месец)</option>
-            <option value="45">45 дни</option>
-            <option value="60">60 дни (2 месеца)</option>
         </select>
 
         <div id="priceBox" class="calc-box">Сума: <b>0.00€</b></div>
 
-        <button id="saveBtn" class="btn-blue" style="margin-top:20px" onclick="doSave()">ЗАПАЗИ</button>
+        <button class="btn-blue" onclick="doSave()">ЗАПАЗИ</button>
         <button class="btn-gray" onclick="closeAll()">ОТКАЗ</button>
-    </div>
-</div>
-
-<div class="modal" id="editProfileModal" style="z-index:3000;">
-    <div class="modal-content">
-        <h3>Редактиране</h3>
-        <input type="file" id="editPInput" accept="image/*" onchange="processImage(event)">
-        <input id="editNInput" placeholder="Име">
-        <input id="editPhInput" placeholder="Телефон" type="tel">
-        <button class="btn-blue" style="margin-top:20px" onclick="saveProfileEdit()">ЗАПАЗИ ПРОМЕНИТЕ</button>
-        <button class="btn-gray" onclick="document.getElementById('editProfileModal').style.display='none'">ОТКАЗ</button>
     </div>
 </div>
 
@@ -134,7 +98,8 @@
 
 <script>
 let clients = JSON.parse(localStorage.getItem("clients") || "[]");
-let tPh=null, curIdx=null;
+let tPh = null;
+let curIdx = null;
 
 function processImage(e) {
     const file = e.target.files[0];
@@ -157,184 +122,124 @@ function processImage(e) {
     reader.readAsDataURL(file);
 }
 
-function save() { 
-    try { localStorage.setItem("clients", JSON.stringify(clients)); render(); } 
-    catch(e) { alert("Паметта е пълна!"); }
-}
-
 function render() {
     const list = document.getElementById("clientList");
     list.innerHTML = "";
     clients.forEach((c, i) => {
         list.innerHTML += `
             <div class="client" onclick="showProfile(${i})">
-                <img class="photo" src="${c.photo || ''}" onerror="this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII='">
+                <div class="photo-container">
+                    ${c.photo ? `<img src="${c.photo}">` : `<span style="font-size:40px">👤</span>`}
+                </div>
                 <div class="status ${c.remaining > 0 ? 'active' : 'inactive'}"></div>
-                <div class="name-info"><b>${c.name}</b><br><small style="color:var(--muted)">${c.phone || ''}</small></div>
+                <div class="name-info">
+                    <b>${c.name}</b>
+                    <small>${c.phone || 'Няма телефон'}</small>
+                </div>
                 <div class="remain-count">${c.remaining}</div>
             </div>`;
     });
 }
 
-function closeAll() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
-
 function openForm(idx) {
     curIdx = idx; tPh = null;
-    document.getElementById("selPk").selectedIndex = 0;
-    document.getElementById("selDs").value = "0";
-    document.getElementById("selDr").value = "0";
-    updateUI();
-
+    document.getElementById("formModal").style.display = "block";
     if (idx === null) {
         document.getElementById("formTitle").innerText = "Нов Клиент";
         document.getElementById("nameFields").style.display = "block";
         document.getElementById("nInput").value = "";
-        document.getElementById("phInput").value = "";
     } else {
-        document.getElementById("profileModal").style.display = "none";
         document.getElementById("formTitle").innerText = "Подновяване";
         document.getElementById("nameFields").style.display = "none";
     }
-    document.getElementById("formModal").style.display = "block";
 }
 
 function updateUI() {
     const pkVal = document.getElementById("selPk").value;
-    const dsVal = parseInt(document.getElementById("selDs").value);
-    const drVal = parseInt(document.getElementById("selDr").value);
-    
-    if (!pkVal) {
-        document.getElementById("priceBox").innerHTML = `Сума: <b>0.00€</b>`;
-        return;
+    if (pkVal) {
+        const pk = JSON.parse(pkVal);
+        document.getElementById("priceBox").innerHTML = `Сума: <b>${pk.p}.00€</b>`;
     }
-
-    const pk = JSON.parse(pkVal);
-    const total = (pk.p * (1 - dsVal / 100)).toFixed(2);
-    document.getElementById("priceBox").innerHTML = `Сума: <b>${total}€</b> | Срок: ${drVal > 0 ? drVal + ' дни' : 'БЕЗ'}`;
 }
 
 function doSave() {
     const pkVal = document.getElementById("selPk").value;
     if (!pkVal) return alert("Избери пакет!");
-    
     const pk = JSON.parse(pkVal);
-    const dr = parseInt(document.getElementById("selDr").value);
 
     if (curIdx === null) {
         const name = document.getElementById("nInput").value;
         if (!name) return alert("Въведи име!");
-        clients.push({ 
-            name, 
-            phone: document.getElementById("phInput").value, 
-            photo: tPh, 
-            total: pk.n, 
-            remaining: pk.n, 
-            expiry: dr > 0 ? Date.now() + (dr * 86400000) : 0, 
-            history: [] 
+        clients.push({
+            name, phone: document.getElementById("phInput").value,
+            photo: tPh, total: pk.n, remaining: pk.n, history: []
         });
     } else {
-        const c = clients[curIdx];
-        c.total = pk.n; 
-        c.remaining = pk.n;
-        c.expiry = dr > 0 ? Date.now() + (dr * 86400000) : 0;
-        c.history.unshift({ date: Date.now(), txt: "🔥 ПОДНОВЕН (" + pk.n + " тр.)" });
+        clients[curIdx].remaining = pk.n;
+        clients[curIdx].history.unshift({date: Date.now(), txt: "Подновен абонамент"});
     }
     save(); closeAll();
 }
 
 function showProfile(i) {
     curIdx = i; const c = clients[i];
-    const expStr = c.expiry ? new Date(c.expiry).toLocaleDateString('bg-BG') : "Безсрочен";
-    const historyHTML = c.history.map(h => `<div class="history-item"><b>${new Date(h.date).toLocaleDateString('bg-BG')}</b> - ${h.txt}</div>`).join('');
+    const historyHTML = c.history.slice(0, 5).map(h => `<div class="history-item"><b>${new Date(h.date).toLocaleDateString('bg-BG')}</b> - ${h.txt}</div>`).join('');
     document.getElementById("profileContent").innerHTML = `
         <center>
-            <img src="${c.photo||''}" class="photo" style="width:85px;height:85px;">
-            <br><div class="edit-badge" onclick="openEditModal()">✏️ Редактирай</div>
-            <h2 style="margin:10px 0 5px 0;">${c.name}</h2>
-            <small style="color:var(--muted)">${c.phone || 'Няма телефон'}</small>
+            <div class="photo-container" style="width:120px; height:120px; margin-bottom:10px;">
+                ${c.photo ? `<img src="${c.photo}">` : `<span style="font-size:60px">👤</span>`}
+            </div>
+            <h2>${c.name}</h2>
         </center>
-        <p><b>Остават:</b> ${c.remaining} от ${c.total}</p>
-        <p><b>Валиден до:</b> ${expStr}</p>
-        ${c.remaining <= 0 ? `<button class="btn-blue" onclick="openForm(${i})">ПОДНОВИ АБОНАМЕНТА</button>` : `<button class="btn-green" onclick="markTr(${i})">МАРКИРАЙ ТРЕНИРОВКА</button>`}
-        <button class="btn-purple" onclick="viber(${i})">ОТЧЕТ (Viber)</button>
+        <p>Остават: <b>${c.remaining}</b> тренировки</p>
+        <button class="btn-green" onclick="markTr(${i})">МАРКИРАЙ ТРЕНИРОВКА</button>
+        <button class="btn-blue" onclick="openForm(${i})">ПОДНОВИ</button>
+        <button class="btn-purple" onclick="viberReport(${i})">VIBER ОТЧЕТ</button>
         <button class="btn-gray" onclick="closeAll()">ЗАТВОРИ</button>
-        <div class="history-section"><p style="font-weight:bold; color:var(--accent);">Хронология:</p>${historyHTML || 'Няма данни.'}</div>
-        <button class="btn-red" style="margin-top:30px; padding:8px; font-size:12px;" onclick="del(${i})">ИЗТРИЙ КЛИЕНТА</button>`;
+        <div style="margin-top:20px">${historyHTML}</div>
+        <button class="btn-red" style="font-size:14px" onclick="del(${i})">ИЗТРИЙ КЛИЕНТ</button>
+    `;
     document.getElementById("profileModal").style.display = "block";
 }
 
-function openEditModal() {
-    const c = clients[curIdx];
-    document.getElementById("editNInput").value = c.name;
-    document.getElementById("editPhInput").value = c.phone || "";
-    document.getElementById("editProfileModal").style.display = "block";
-}
-
-function saveProfileEdit() {
-    clients[curIdx].name = document.getElementById("editNInput").value;
-    clients[curIdx].phone = document.getElementById("editPhInput").value;
-    if (tPh) clients[curIdx].photo = tPh;
-    save(); document.getElementById("editProfileModal").style.display = "none"; showProfile(curIdx);
-}
-
 function markTr(i) {
-    const note = prompt("Бележка:", "Силова тренировка");
-    if(note) { clients[i].remaining--; clients[i].history.unshift({date: Date.now(), txt: note}); save(); showProfile(i); }
+    if (clients[i].remaining <= 0) return alert("Няма тренировки!");
+    clients[i].remaining--;
+    clients[i].history.unshift({date: Date.now(), txt: "Тренировка"});
+    save(); showProfile(i);
 }
 
-function viber(i) {
+function viberReport(i) {
     const c = clients[i];
-    const exp = c.expiry ? new Date(c.expiry).toLocaleDateString('bg-BG') : 'безсрочно';
-    const lastThree = c.history.slice(0, 3).map((h, idx) => `${idx + 1}. ${new Date(h.date).toLocaleDateString('bg-BG')} - ${h.txt}`).join('\n');
-    let msg = `📊 ОТЧЕТ: ${c.name}\n✅ Остават: ${c.remaining} от ${c.total} тр.\n📅 Валидна до: ${exp}\n\n🕒 Последни записи:\n${lastThree}`;
+    const msg = `Карта: ${c.name}\nОстават: ${c.remaining} тренировки.`;
     window.location.href = `viber://forward?text=${encodeURIComponent(msg)}`;
 }
 
+function save() { localStorage.setItem("clients", JSON.stringify(clients)); render(); }
+function closeAll() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 function del(i) { if(confirm("Изтриване?")) { clients.splice(i, 1); save(); closeAll(); } }
 
 function exportData() {
-    const dataStr = JSON.stringify(clients);
-    const blob = new Blob([dataStr], {type: "application/json"});
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `fitness_backup_${new Date().toLocaleDateString('bg-BG')}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-}
-
-function importData() {
-    document.getElementById('importInput').value = "";
-    document.getElementById('importInput').click();
+    const blob = new Blob([JSON.stringify(clients)], {type: "application/json"});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = "fitness_backup.json";
+    a.click();
 }
 
 function doImport(event) {
-    const file = event.target.files[0];
-    if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const imported = JSON.parse(e.target.result);
-            if (Array.isArray(imported)) {
-                if (confirm(`Намерени са ${imported.length} клиенти. Желаете ли да ЗАМЕНИТЕ текущите данни?`)) {
-                    clients = imported; save();
-                }
-            }
-        } catch (err) { alert("Грешка при четене!"); }
-    };
-    reader.readAsText(file);
+    reader.onload = (e) => { clients = JSON.parse(e.target.result); save(); };
+    reader.readAsText(event.target.files[0]);
 }
 
+render();
 
-
-     render();
-    if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js');
   });
 }
-</script>  
+</script>
 </body>
-
 </html>
-
