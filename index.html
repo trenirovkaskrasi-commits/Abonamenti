@@ -10,39 +10,30 @@
             --muted: #b5b5b5; --danger: #ff4d4d; --success: #33cc66; --warning: #ff9933; --purple: #b366ff;
         }
         * { box-sizing: border-box; }
-        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 100px; }
-        header { background: #000; padding: 18px; text-align: center; font-weight: bold; font-size: 22px; border-bottom: 2px solid #222; }
+        body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); padding-bottom: 100px; }
+        header { background: #000; padding: 15px; text-align: center; font-weight: bold; border-bottom: 2px solid #222; }
         
-        #top-bar { padding: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; position: sticky; top: 0; background: #000; z-index: 10; border-bottom: 1px solid #222; }
-        .btn-top { padding: 12px; font-size: 14px; border-radius: 10px; border: 1px solid #333; cursor: pointer; font-weight: bold; text-align: center; }
+        #top-bar { padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: sticky; top: 0; background: #000; z-index: 10; border-bottom: 1px solid #222; }
+        .btn-top { padding: 10px; font-size: 13px; border-radius: 8px; border: 1px solid #333; cursor: pointer; font-weight: bold; text-align: center; }
         
-        /* УВЕЛИЧЕН СПИСЪК С КЛИЕНТИ */
-        .client { display: flex; align-items: center; background: var(--card); margin: 12px; padding: 15px; border-radius: 18px; border: 1px solid #222; cursor: pointer; }
-        .photo { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; background: #333; }
-        .status { width: 15px; height: 15px; border-radius: 50%; margin: 0 15px; }
+        .client { display: flex; align-items: center; background: var(--card); margin: 10px; padding: 12px; border-radius: 15px; border: 1px solid #222; cursor: pointer; }
+        .photo { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; background: #333; }
+        .status { width: 12px; height: 12px; border-radius: 50%; margin: 0 10px; }
         .active { background: var(--success); }
         .inactive { background: var(--danger); }
-        
-        /* ТЕКСТ В СПИСЪКА - ПО-ГОЛЯМ */
-        .name-info { flex: 1; font-size: 20px; line-height: 1.2; }
-        .name-info b { display: block; margin-bottom: 4px; }
-        .name-info small { font-size: 15px; color: var(--muted); letter-spacing: 0.5px; }
-        
-        /* ЦИФРА ТРЕНИРОВКИ - ПО-ГОЛЯМА */
-        .remain-count { font-size: 34px; font-weight: 800; color: var(--accent); min-width: 45px; text-align: right; }
+        .name-info { flex: 1; }
+        .remain-count { font-size: 24px; font-weight: bold; color: var(--accent); }
 
         #addBtn { 
-            position: fixed; right: 25px; bottom: 35px; width: 70px; height: 70px; 
+            position: fixed; right: 20px; bottom: 30px; width: 65px; height: 65px; 
             border-radius: 50%; background: var(--accent); color: black; 
-            font-size: 45px; border: none; z-index: 100; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(77, 163, 255, 0.4);
+            font-size: 40px; border: none; z-index: 100; display: flex; align-items: center; justify-content: center;
         }
 
-        /* МОДАЛНИ ПРОЗОРЦИ */
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); overflow-y: auto; z-index: 2000; }
-        .modal-content { background: var(--card); margin: 15px; padding: 25px; border-radius: 25px; border: 1px solid #333; }
+        .modal-content { background: var(--card); margin: 15px; padding: 20px; border-radius: 20px; border: 1px solid #333; }
         
-        input, button, select { width: 100%; padding: 16px; margin-top: 10px; border-radius: 12px; border: 1px solid #333; font-size: 17px; font-weight: 600; background: #1a1a1a; color: white; }
+        input, button, select { width: 100%; padding: 14px; margin-top: 10px; border-radius: 10px; border: 1px solid #333; font-size: 16px; font-weight: 600; background: #1a1a1a; color: white; }
         select { appearance: none; cursor: pointer; }
         
         .btn-blue { background: var(--accent); color: black; border: none; }
@@ -51,12 +42,12 @@
         .btn-gray { background: #333; color: white; border: none; }
         .btn-green { background: var(--success); color: black; border: none; }
         
-        .calc-box { background: #1a1a1a; padding: 18px; border-radius: 12px; margin-top: 15px; border-left: 5px solid var(--accent); font-size: 19px; }
-        .history-section { margin-top: 25px; border-top: 1px solid #333; padding-top: 20px; }
-        .history-item { font-size: 15px; padding: 10px; border-bottom: 1px solid #222; color: var(--muted); }
-        .edit-badge { background: #222; padding: 10px 20px; border-radius: 25px; font-size: 14px; color: var(--accent); cursor: pointer; display: inline-block; margin-top: 12px; border: 1px solid #444; }
+        .calc-box { background: #1a1a1a; padding: 15px; border-radius: 10px; margin-top: 15px; border-left: 4px solid var(--accent); font-size: 17px; }
+        .history-section { margin-top: 20px; border-top: 1px solid #333; padding-top: 15px; }
+        .history-item { font-size: 13px; padding: 8px; border-bottom: 1px solid #222; color: var(--muted); }
+        .edit-badge { background: #222; padding: 8px 15px; border-radius: 20px; font-size: 13px; color: var(--accent); cursor: pointer; display: inline-block; margin-top: 10px; border: 1px solid #444; }
         
-        label { display: block; margin-top: 18px; font-size: 15px; color: var(--muted); margin-left: 5px; }
+        label { display: block; margin-top: 15px; font-size: 14px; color: var(--muted); margin-left: 5px; }
     </style>
 </head>
 <body>
@@ -325,14 +316,7 @@ function doImport(event) {
     reader.readAsText(file);
 }
 
-
 render();
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js');
-  });
-}
 </script>
 </body>
 </html>
